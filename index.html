@@ -1,0 +1,52 @@
+<html>
+  <body>
+    <h1>オセロ</h1>
+    <canvas id="canvas"  width="512" height="512"></canvas>
+    <script>
+
+const size = 8;
+const grid_size = 64;
+const wd = 2;
+
+let cells = [];
+
+const canvas = document.getElementById('canvas');
+canvas.addEventListener('click', onClick, false);
+draw();
+
+function draw(){
+  if (canvas.getContext) {
+    const ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0, 0, grid_size*size, grid_size*size);
+
+    for(let x=0;x<size;x++){
+      for(let y=0;y<size;y++){
+        ctx.fillStyle = "#080";
+        ctx.fillRect(x*grid_size+wd, y*grid_size+wd, grid_size-wd*2, grid_size-wd*2);
+
+        ctx.fillStyle = "#000";
+        ctx.beginPath();
+        ctx.arc(x*grid_size+grid_size/2, y*grid_size+grid_size/2, grid_size/2-wd*2, 0, Math.PI*2, false);
+        ctx.fill();
+      }
+    }
+  } else {
+    console.log("not")
+  }
+}
+
+function onClick(e) {
+  var rect = e.target.getBoundingClientRect();
+  x = e.clientX - rect.left;
+  y = e.clientY - rect.top;
+  x = Math.trunc(x/grid_size)
+  y = Math.trunc(y/grid_size)
+  console.log(x,y)
+
+  draw();
+}
+    </script>
+  </body>
+</html>
