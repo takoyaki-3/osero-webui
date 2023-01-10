@@ -1,7 +1,7 @@
 <html>
   <body>
     <h1>オセロ</h1>
-    <canvas id="canvas"  width="512" height="512"></canvas>
+    <canvas id="canvas" width="512" height="512"></canvas>
     <script>
 
 const size = 8;
@@ -9,6 +9,17 @@ const grid_size = 64;
 const wd = 2;
 
 let cells = [];
+for(let x=0;x<size;x++){
+  const row = [];
+  for(let y=0;y<size;y++){
+    row.push(0);
+  }
+  cells.push(row);
+}
+cells[3][3]=1;
+cells[4][3]=-1;
+cells[3][4]=-1;
+cells[4][4]=1;
 
 const canvas = document.getElementById('canvas');
 canvas.addEventListener('click', onClick, false);
@@ -26,7 +37,13 @@ function draw(){
         ctx.fillStyle = "#080";
         ctx.fillRect(x*grid_size+wd, y*grid_size+wd, grid_size-wd*2, grid_size-wd*2);
 
-        ctx.fillStyle = "#000";
+        if(cells[x][y]==1){
+          ctx.fillStyle = "#000";
+        } else if(cells[x][y]==-1){
+          ctx.fillStyle = "#fff";
+        } else {
+          continue
+        }
         ctx.beginPath();
         ctx.arc(x*grid_size+grid_size/2, y*grid_size+grid_size/2, grid_size/2-wd*2, 0, Math.PI*2, false);
         ctx.fill();
