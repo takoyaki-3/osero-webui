@@ -8,18 +8,18 @@ const size = 8;
 const grid_size = 64;
 const wd = 2;
 
-let cells = [];
+let board = [];
 for(let x=0;x<size;x++){
   const row = [];
   for(let y=0;y<size;y++){
     row.push(0);
   }
-  cells.push(row);
+  board.push(row);
 }
-cells[3][3]=1;
-cells[4][3]=-1;
-cells[3][4]=-1;
-cells[4][4]=1;
+board[3][3]=1;
+board[4][3]=-1;
+board[3][4]=-1;
+board[4][4]=1;
 
 const canvas = document.getElementById('canvas');
 canvas.addEventListener('click', onClick, false);
@@ -37,9 +37,9 @@ function draw(){
         ctx.fillStyle = "#080";
         ctx.fillRect(x*grid_size+wd, y*grid_size+wd, grid_size-wd*2, grid_size-wd*2);
 
-        if(cells[x][y]==1){
+        if(board[y][x]==1){
           ctx.fillStyle = "#000";
-        } else if(cells[x][y]==-1){
+        } else if(board[y][x]==-1){
           ctx.fillStyle = "#fff";
         } else {
           continue
@@ -62,7 +62,32 @@ function onClick(e) {
   y = Math.trunc(y/grid_size)
   console.log(x,y)
 
-  draw();
+  const query = {
+    board,
+    x,
+    y,
+    player:1
+  };
+
+  const url = 'http://localhost:6013/available';
+  const method = "POST";
+  const body = JSON.stringify(query);
+  // const body = ""
+  console.log(body)
+  const headers = {
+    // 'Accept': 'application/json',
+    // 'Content-Type': 'application/json'
+  };
+  console.log({method,headers,body})
+  fetch(url,{method,headers,body})
+  .then(function (data) {
+    return data.json();
+  })
+  .then(function (json) {
+    console.log(json)
+    board = json.board;
+    draw();
+  });
 }
     </script>
   </body>
