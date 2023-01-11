@@ -85,10 +85,11 @@ function onClick(e) {
   })
   .then(function (json) {
     console.log(json)
-    board = json.board;
-    draw();
-
-    cpu();
+    if(json.status=="true"){
+      board = json.board;
+      draw();
+      cpu();
+    }
   });
 }
 
