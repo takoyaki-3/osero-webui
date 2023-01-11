@@ -87,6 +87,32 @@ function onClick(e) {
     console.log(json)
     board = json.board;
     draw();
+
+    cpu();
+  });
+}
+
+function cpu(){
+  const query = {
+    board,
+    player:-1
+  };
+
+  const url = 'http://localhost:6013/cpu';
+  const method = "POST";
+  const body = JSON.stringify(query);
+
+  console.log(body)
+  const headers = {};
+  console.log({method,headers,body})
+  fetch(url,{method,headers,body})
+  .then(function (data) {
+    return data.json();
+  })
+  .then(function (json) {
+    console.log("cpu",json)
+    board = json.board;
+    draw();
   });
 }
     </script>
